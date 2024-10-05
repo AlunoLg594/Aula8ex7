@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trenzinho em Movimento</title>
+    <script src="cordova.js"></script>
+    <script src="js/pixi.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Criar o aplicativo PixiJS
+        const app = new PIXI.Application({
+            width: window.innerWidth,
+            height: window.innerHeight,
+            backgroundColor: 0xA0D6E0,
+        });
+        document.body.appendChild(app.view);
+
+        // Carregar os recursos
+        PIXI.Loader.shared
+            .add('train', 'https://pixijs.com/examples/examples/assets/spritesheet.json')
+            .load(setup);
+
+        let train, speed = 2;
+
+        function setup() {
+            // Criar o trenzinho
+            train = new PIXI.Sprite.from('train/train.png');
+            train.anchor.set(0.5);
+            train.x = app.screen.width / 2;
+            train.y = app.screen.height / 2;
+
+            app.stage.addChild(train);
+
+            // Iniciar a animação
+            app.ticker.add(update);
+        }
+
+        function update() {
+            train.x += speed;
+
+            // Fazer o trenzinho voltar ao início quando sai da tela
+            if (train.x > app.screen.width + train.width / 2) {
+                train.x = -train.width / 2;
+            }
+        }
+    </script>
+</body>
+</html>
